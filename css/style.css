@@ -1,0 +1,123 @@
+/* FixMyCampus - the status tracker is the signature element, everything else stays quiet. */
+:root {
+  --ink: #14232b;
+  --paper: #f4f6f5;
+  --card: #ffffff;
+  --line: #dbe2e2;
+  --muted: #5d6e77;
+  --teal: #17606b;
+  --teal-dark: #0f4750;
+  --amber: #d98e00;
+  --green: #2c7a55;
+  --red: #b83a2b;
+  --slate: #6b7c85;
+}
+
+body {
+  font-family: "Nunito Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.55;
+}
+h1, h2, h3, h4, h5, h6, .brand {
+  font-family: "Sora", "Nunito Sans", system-ui, sans-serif;
+  letter-spacing: -0.015em;
+}
+a { color: var(--teal); }
+.text-muted { color: var(--muted) !important; }
+
+:focus-visible { outline: 3px solid rgba(217, 142, 0, 0.55); outline-offset: 2px; }
+
+/* ---- Bootstrap tweaks ---- */
+.btn-primary {
+  --bs-btn-bg: var(--teal); --bs-btn-border-color: var(--teal);
+  --bs-btn-hover-bg: var(--teal-dark); --bs-btn-hover-border-color: var(--teal-dark);
+  --bs-btn-active-bg: var(--teal-dark); --bs-btn-active-border-color: var(--teal-dark);
+  --bs-btn-disabled-bg: var(--teal); --bs-btn-disabled-border-color: var(--teal);
+}
+.btn-outline-primary {
+  --bs-btn-color: var(--teal); --bs-btn-border-color: var(--teal);
+  --bs-btn-hover-bg: var(--teal); --bs-btn-hover-border-color: var(--teal);
+  --bs-btn-active-bg: var(--teal-dark); --bs-btn-active-border-color: var(--teal-dark);
+}
+.form-control, .form-select { border-color: var(--line); border-radius: 6px; }
+.form-control:focus, .form-select:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(23, 96, 107, 0.15); }
+.form-label { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; }
+.modal-content { border: 0; border-radius: 10px; }
+
+/* ---- Top bar ---- */
+.topbar { background: var(--card); border-bottom: 1px solid var(--line); padding: 0.7rem 0; }
+.brand { font-weight: 700; font-size: 1.2rem; color: var(--ink); text-decoration: none; }
+.brand b { color: var(--teal); font-weight: 700; }
+.navlink { color: var(--ink); text-decoration: none; font-weight: 600; font-size: 0.92rem; }
+.navlink:hover, .navlink.active { color: var(--teal); }
+
+/* ---- Status & priority ---- */
+.status { display: inline-block; padding: 0.12rem 0.6rem; border-radius: 999px; font-size: 0.75rem; font-weight: 700; white-space: nowrap; }
+.status-REPORTED    { background: #e8edef; color: #44545c; }
+.status-ASSIGNED    { background: #dcedf0; color: var(--teal-dark); }
+.status-IN_PROGRESS { background: #fbeccb; color: #8a5a00; }
+.status-RESOLVED    { background: #d9efe3; color: #1f5c3f; }
+
+.prio { font-size: 0.82rem; font-weight: 700; white-space: nowrap; }
+.prio::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; background: currentColor; }
+.prio-LOW { color: var(--slate); }
+.prio-MEDIUM { color: var(--teal); }
+.prio-HIGH { color: var(--amber); }
+.prio-CRITICAL { color: var(--red); }
+
+/* ---- The status tracker ---- */
+.track { display: flex; list-style: none; margin: 0; padding: 0; }
+.track li { flex: 1; position: relative; padding-top: 26px; text-align: center; font-size: 0.78rem; color: var(--muted); }
+.track li::before {
+  content: ""; position: absolute; top: 4px; left: 50%; width: 14px; height: 14px; margin-left: -7px;
+  border-radius: 50%; background: #fff; border: 2px solid var(--line); z-index: 1;
+}
+.track li::after { content: ""; position: absolute; top: 10px; left: -50%; width: 100%; height: 3px; background: var(--line); }
+.track li:first-child::after { display: none; }
+.track li.done, .track li.current { color: var(--ink); font-weight: 700; }
+.track li.done::before { background: var(--teal); border-color: var(--teal); }
+.track li.done::after, .track li.current::after { background: var(--teal); }
+.track li.current::before { background: var(--amber); border-color: var(--amber); box-shadow: 0 0 0 4px rgba(217, 142, 0, 0.2); }
+
+/* ---- Issue tickets ---- */
+.ticket {
+  background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--slate);
+  border-radius: 6px; padding: 0.95rem 1.1rem; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s;
+}
+.ticket:hover { border-color: #b9c6c8; box-shadow: 0 2px 10px rgba(20, 35, 43, 0.07); }
+.ticket.s-ASSIGNED { border-left-color: var(--teal); }
+.ticket.s-IN_PROGRESS { border-left-color: var(--amber); }
+.ticket.s-RESOLVED { border-left-color: var(--green); }
+.ticket h3 { font-size: 1.02rem; margin: 0; }
+.ticket .meta { font-size: 0.85rem; color: var(--muted); }
+
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 1.25rem; }
+
+/* ---- Landing page ---- */
+.hero h1 { font-size: clamp(2rem, 4.6vw, 3.1rem); line-height: 1.12; font-weight: 700; }
+.sample-ticket { background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--amber); border-radius: 6px; padding: 1.1rem 1.25rem; max-width: 30rem; }
+.auth-card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 1.6rem; }
+.auth-tabs { display: flex; gap: 1.4rem; border-bottom: 1px solid var(--line); margin-bottom: 1.2rem; }
+.auth-tabs button { background: none; border: 0; padding: 0 0 0.6rem; font-weight: 700; color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -1px; }
+.auth-tabs button.active { color: var(--ink); border-bottom-color: var(--teal); }
+
+/* ---- Admin ---- */
+.stat { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 0.9rem 1.1rem; }
+.stat .num { font-family: "Sora", sans-serif; font-size: 1.9rem; font-weight: 700; line-height: 1.1; }
+.stat .lbl { color: var(--muted); font-size: 0.85rem; }
+.table-issues th { font-size: 0.8rem; color: var(--muted); font-weight: 700; border-bottom-color: var(--line); white-space: nowrap; }
+.table-issues td { vertical-align: middle; }
+.table-issues tbody tr { cursor: pointer; }
+.table-issues tbody tr:hover { background: #eef3f3; }
+.catbar { height: 8px; border-radius: 4px; background: var(--teal); }
+
+/* ---- Detail modal ---- */
+.timeline { list-style: none; margin: 0; padding: 0 0 0 1rem; border-left: 2px solid var(--line); }
+.timeline li { position: relative; padding: 0 0 0.9rem 0.9rem; font-size: 0.9rem; }
+.timeline li::before { content: ""; position: absolute; left: -1.38rem; top: 0.35rem; width: 10px; height: 10px; border-radius: 50%; background: var(--teal); }
+.issue-photo { max-width: 100%; max-height: 260px; border-radius: 6px; border: 1px solid var(--line); }
+
+.toast-zone { position: fixed; right: 1rem; bottom: 1rem; z-index: 2000; display: grid; gap: 0.5rem; max-width: min(22rem, 92vw); }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
