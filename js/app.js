@@ -42,6 +42,7 @@ async function api(path, options = {}) {
   const headers = Object.assign({}, options.headers);
   const token = getToken();
   if (token) headers['Authorization'] = 'Bearer ' + token;
+  headers['Bypass-Tunnel-Reminder'] = 'true';
 
   let body = options.body;
   if (body && !(body instanceof FormData)) {
