@@ -49,7 +49,15 @@ async function api(path, options = {}) {
     body = JSON.stringify(body);
   }
 
-  const res = await fetch(API_BASE + path, Object.assign({}, options, { headers, body }));
+  let res;
+  try {
+    res = await fetch(API_BASE + path, Object.assign({}, options, { headers, body }));
+  } catch (err) {
+    if (window.location.protocol === 'https:' && API_BASE.startsWith('http://')) {
+      throw new Error(`Cannot connect to backend (${API_BASE}): Browsers block HTTP requests from HTTPS sites (Mixed Content). Your backend must use HTTPS.`);
+    }
+    throw new Error(`Cannot connect to backend at ${API_BASE}. Ensure the backend is running and CORS is configured.`);
+  }
   const text = await res.text();
   let data = null;
   if (text) { try { data = JSON.parse(text); } catch (e) { data = null; } }
