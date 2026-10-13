@@ -57,7 +57,19 @@
           <div class="mb-3"><label class="form-label" for="regRole">I am a</label>
             <select class="form-select" id="regRole"><option value="STUDENT">Student</option><option value="STAFF">Staff member</option></select></div>
           <button class="btn btn-primary w-100" type="submit">Create account</button>
-        </form>
+        <div class="mt-3 pt-3 border-top text-center">
+          <div class="small text-muted d-flex align-items-center justify-content-between">
+            <span class="text-truncate me-2" style="max-width:240px">Backend: <code id="apiBaseDisplay"></code></span>
+            <button id="toggleApiConfig" type="button" class="btn btn-sm btn-link p-0 text-decoration-none">Change</button>
+          </div>
+          <div id="apiConfigForm" class="mt-2 text-start d-none">
+            <div class="input-group input-group-sm">
+              <input type="url" id="apiBaseInput" class="form-control" placeholder="https://your-backend.up.railway.app">
+              <button id="saveApiBase" class="btn btn-outline-primary" type="button">Save</button>
+            </div>
+            <div class="form-text" style="font-size:0.75rem">Paste your Railway backend URL here and click Save.</div>
+          </div>
+        </div>
       </div>
     </section>
   </div>
@@ -117,6 +129,30 @@
       role: document.getElementById('regRole').value
     });
   });
+
+  const apiDisplay = document.getElementById('apiBaseDisplay');
+  const apiConfigForm = document.getElementById('apiConfigForm');
+  const apiInput = document.getElementById('apiBaseInput');
+  if (apiDisplay) {
+    apiDisplay.textContent = API_BASE || 'http://localhost:8080';
+    if (apiInput) apiInput.value = API_BASE || 'http://localhost:8080';
+    document.getElementById('toggleApiConfig').onclick = (e) => {
+      e.preventDefault();
+      apiConfigForm.classList.toggle('d-none');
+    };
+    document.getElementById('saveApiBase').onclick = () => {
+      const val = apiInput.value.trim().replace(/\/$/, '');
+      if (val) {
+        localStorage.setItem('FMC_API_BASE', val);
+        window.location.reload();
+      }
+    };
+  }
+
+  if (window.location.protocol === 'https:' && (!API_BASE || API_BASE.startsWith('http://'))) {
+    showError('Backend is currently pointing to ' + (API_BASE || 'http://localhost:8080') + '. On HTTPS, please click "Change" below to set your Railway backend HTTPS URL.');
+    if (apiConfigForm) apiConfigForm.classList.remove('d-none');
+  }
 </script>
 </body>
 </html>
